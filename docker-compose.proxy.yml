@@ -1,0 +1,6 @@
+# Option A: CRM listens on localhost:16350 only.
+# Your existing nginx/Caddy on port 80/443 proxies crm.fratelanza.com -> here.
+services:
+  web:
+    ports:
+      - "127.0.0.1:16350:16350"

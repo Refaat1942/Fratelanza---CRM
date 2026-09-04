@@ -1,26 +1,13 @@
 #!/bin/bash
-# Deploy or update Fratelanza CRM (HTTPS on crm.fratelanza.com)
+# Update Fratelanza CRM (Option A — port 16350 behind nginx)
 set -e
-
 cd "$(dirname "$0")/.."
+COMPOSE="docker compose -f docker-compose.yml -f docker-compose.proxy.yml"
 
-if [ ! -f .env ]; then
-    cp .env.example .env
-    echo "Created .env — edit SECRET_KEY and POSTGRES_PASSWORD, then run again."
-    exit 1
-fi
-
-mkdir -p backups app/static/uploads
-
-echo "Pulling latest code..."
 git pull origin main
+mkdir -p backups app/static/uploads
+$COMPOSE down 2>/dev/null || true
+$COMPOSE up -d --build
 
-echo "Building and starting containers..."
-docker compose --profile https down 2>/dev/null || true
-docker compose --profile https up -d --build
-
-echo ""
-echo "Deployment complete!"
-echo "URL  : https://crm.fratelanza.com/login"
-echo "Login: admin / admin"
-echo "Logs : docker compose --profile https logs -f web caddy"
+echo "Updated. Test: curl -I http://127.0.0.1:16350/login"
+echo "Public : https://crm.fratelanza.com/login"

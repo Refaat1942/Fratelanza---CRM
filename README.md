@@ -74,46 +74,54 @@ Add an **A record** in Cloudflare for `fratelanza.com`:
 
 Use **DNS only** on first deploy so Let's Encrypt can issue the certificate. After HTTPS works, you may enable Cloudflare proxy (orange cloud) with SSL mode **Full**.
 
-### 2) Clean VPS install (Ubuntu 24.04)
+### 2) Clean VPS install (Option A — recommended if port 80 is already used)
 
-SSH to the VPS as root, then run **one command**:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Refaat1942/Lotus-CRM/main/scripts/setup_clean_vps.sh | bash
-```
-
-Or clone first:
+SSH to the VPS as root:
 
 ```bash
+cd /root
 git clone https://github.com/Refaat1942/Lotus-CRM.git /opt/fratelanza-crm
 cd /opt/fratelanza-crm
-bash scripts/setup_clean_vps.sh
+bash scripts/setup_option_a.sh
 ```
 
-This installs Docker, configures the firewall (ports 80/443), generates secure passwords, and starts:
+This starts CRM on **`127.0.0.1:16350` only** (does not touch port 80/443).
 
-- **PostgreSQL** (database)
-- **Web** (Flask/Gunicorn on internal port 16350)
-- **Caddy** (HTTPS reverse proxy for `crm.fratelanza.com`)
-- **Backup** (daily database dumps)
+If **nginx** is installed on the VPS, the script adds a proxy for `crm.fratelanza.com` automatically.
+
+If you use **Docker** for your main website (no host nginx), add a `server` block in that stack:
+
+```nginx
+# crm.fratelanza.com -> host port 16350
+location / {
+    proxy_pass http://host.docker.internal:16350;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+Or on Linux Docker without `host.docker.internal`:
+
+```nginx
+proxy_pass http://172.17.0.1:16350;
+```
+
+Config file included: `deploy/nginx-crm.fratelanza.com.conf`
 
 ### 3) Access
 
-Open **https://crm.fratelanza.com/login**
+- Local test: `curl -I http://127.0.0.1:16350/login`
+- Public: **https://crm.fratelanza.com/login** (after DNS + nginx proxy)
 
 Default login: `admin` / `admin` — change immediately.
 
-### 4) Firewall
-
-Only these ports need to be open publicly:
+### 4) Optional — standalone HTTPS (only if port 80 is free)
 
 ```bash
-sudo ufw allow OpenSSH
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
+docker compose --profile https up -d --build
 ```
 
-Port **16350** is no longer exposed; traffic goes through Caddy on 443.
+Do **not** use this if another app already uses ports 80/443.
 
 ### 5) Updates
 

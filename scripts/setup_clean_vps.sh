@@ -37,6 +37,7 @@ ufw allow 443/tcp
 ufw --force enable || true
 
 echo "[4/6] Clone application..."
+cd /root
 rm -rf "$INSTALL_DIR"
 git clone "$REPO" "$INSTALL_DIR"
 cd "$INSTALL_DIR"

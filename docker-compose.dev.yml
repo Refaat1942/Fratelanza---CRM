@@ -1,0 +1,5 @@
+# Local development override — exposes port 16350 (no HTTPS / no Caddy)
+services:
+  web:
+    ports:
+      - "16350:16350"

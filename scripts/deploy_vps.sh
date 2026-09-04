@@ -1,25 +1,26 @@
 #!/bin/bash
-# Deploy Lotus CRM on VPS (port 16350)
+# Deploy or update Lotus CRM (with Caddy HTTPS on crm.fratelanza.com)
 set -e
 
-echo "=== Lotus CRM Deployment ==="
+cd "$(dirname "$0")/.."
 
 if [ ! -f .env ]; then
     cp .env.example .env
-    echo "Created .env from .env.example – please edit SECRET_KEY and POSTGRES_PASSWORD!"
+    echo "Created .env — edit SECRET_KEY and POSTGRES_PASSWORD, then run again."
     exit 1
 fi
 
-mkdir -p backups
+mkdir -p backups app/static/uploads
+
+echo "Pulling latest code..."
+git pull origin main
 
 echo "Building and starting containers..."
-docker compose down 2>/dev/null || true
-docker compose up -d --build
+docker compose --profile https down 2>/dev/null || true
+docker compose --profile https up -d --build
 
 echo ""
 echo "Deployment complete!"
-echo "Access: http://$(hostname -I | awk '{print $1}'):16350"
+echo "URL  : https://crm.fratelanza.com/login"
 echo "Login: admin / admin"
-echo ""
-echo "Backups: ./backups/"
-echo "Logs: docker compose logs -f web"
+echo "Logs : docker compose logs -f web caddy"

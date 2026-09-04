@@ -18,8 +18,8 @@ services:
   web:
     build: .
     restart: unless-stopped
-    ports:
-      - "16350:16350"
+    expose:
+      - "16350"
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-lotus}:${POSTGRES_PASSWORD:-lotus_secret_change_me}@db:5432/${POSTGRES_DB:-lotus_crm}
       SECRET_KEY: ${SECRET_KEY:-change-this-secret-key-in-production}
@@ -40,6 +40,21 @@ services:
       timeout: 10s
       retries: 5
       start_period: 90s
+
+  caddy:
+    image: caddy:2-alpine
+    profiles: ["https"]
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      web:
+        condition: service_healthy
 
   backup:
     image: postgres:16-alpine
@@ -66,3 +81,5 @@ services:
 
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:

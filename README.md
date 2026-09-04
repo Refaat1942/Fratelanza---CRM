@@ -56,27 +56,64 @@ python run.py
 
 Open http://localhost:16350 (or the port set in `.env`).
 
-## Docker Deployment (VPS)
+## Docker Deployment (VPS) — crm.fratelanza.com
 
-Deploy on your VPS (`187.124.15.14`) on port **16350**:
+### 1) Cloudflare DNS
+
+Add an **A record** in Cloudflare for `fratelanza.com`:
+
+| Type | Name | Content | Proxy |
+|------|------|---------|-------|
+| A | `crm` | `187.124.15.14` | DNS only (grey cloud) |
+
+Use **DNS only** on first deploy so Let's Encrypt can issue the certificate. After HTTPS works, you may enable Cloudflare proxy (orange cloud) with SSL mode **Full**.
+
+### 2) Clean VPS install (Ubuntu 24.04)
+
+SSH to the VPS as root, then run **one command**:
 
 ```bash
-# On VPS
-git clone https://github.com/Refaat1942/Lotus-CRM.git
-cd Lotus-CRM
-
-cp .env.example .env
-# Edit .env: set SECRET_KEY, POSTGRES_PASSWORD
-
-docker compose up -d --build
+curl -fsSL https://raw.githubusercontent.com/Refaat1942/Lotus-CRM/main/scripts/setup_clean_vps.sh | bash
 ```
 
-Access: **http://187.124.15.14:16350**
-
-### Firewall
+Or clone first:
 
 ```bash
-sudo ufw allow 16350/tcp
+git clone https://github.com/Refaat1942/Lotus-CRM.git /opt/lotus-crm
+cd /opt/lotus-crm
+bash scripts/setup_clean_vps.sh
+```
+
+This installs Docker, configures the firewall (ports 80/443), generates secure passwords, and starts:
+
+- **PostgreSQL** (database)
+- **Web** (Flask/Gunicorn on internal port 16350)
+- **Caddy** (HTTPS reverse proxy for `crm.fratelanza.com`)
+- **Backup** (daily database dumps)
+
+### 3) Access
+
+Open **https://crm.fratelanza.com/login**
+
+Default login: `admin` / `admin` — change immediately.
+
+### 4) Firewall
+
+Only these ports need to be open publicly:
+
+```bash
+sudo ufw allow OpenSSH
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+
+Port **16350** is no longer exposed; traffic goes through Caddy on 443.
+
+### 5) Updates
+
+```bash
+cd /opt/lotus-crm
+bash scripts/deploy_vps.sh
 ```
 
 ### Backups

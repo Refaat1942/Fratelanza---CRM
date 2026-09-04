@@ -1,0 +1,11 @@
+# HTTPS reverse proxy for Lotus CRM
+# DNS: crm.fratelanza.com -> VPS IP (Cloudflare: DNS only / grey cloud recommended for Let's Encrypt)
+
+crm.fratelanza.com {
+    reverse_proxy web:16350
+}
+
+# Optional: redirect bare IP visitors to the domain (uncomment if needed)
+# http://187.124.15.14 {
+#     redir https://crm.fratelanza.com{uri} permanent
+# }

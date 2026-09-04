@@ -74,9 +74,10 @@ Add an **A record** in Cloudflare for `fratelanza.com`:
 
 Use **DNS only** on first deploy so Let's Encrypt can issue the certificate. After HTTPS works, you may enable Cloudflare proxy (orange cloud) with SSL mode **Full**.
 
-### 2) Clean VPS install (Option A — recommended if port 80 is already used)
+### 2) Clean VPS install (no extra ports — uses your existing web server)
 
-SSH to the VPS as root:
+CRM joins the **same Docker network** as your website (`fratelanza-website`, etc.).  
+Nothing is published on the host — only **https://crm.fratelanza.com**.
 
 ```bash
 cd /root
@@ -85,45 +86,20 @@ cd /opt/fratelanza-crm
 bash scripts/setup_option_a.sh
 ```
 
-This starts CRM on **`127.0.0.1:16350` only** (does not touch port 80/443).
+If network auto-detect fails:
 
-If **nginx** is installed on the VPS, the script adds a proxy for `crm.fratelanza.com` automatically.
-
-If you use **Docker** for your main website (no host nginx), add a `server` block in that stack:
-
-```nginx
-# crm.fratelanza.com -> host port 16350
-location / {
-    proxy_pass http://host.docker.internal:16350;
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-Proto $scheme;
-}
+```bash
+docker network ls
+PROXY_NETWORK=your_network_name bash scripts/setup_option_a.sh
 ```
 
-Or on Linux Docker without `host.docker.internal`:
-
-```nginx
-proxy_pass http://172.17.0.1:16350;
-```
-
-Config file included: `deploy/nginx-crm.fratelanza.com.conf`
+Then add the nginx rule from `deploy/nginx-crm.fratelanza.com.conf` to your **existing** reverse proxy and reload it.
 
 ### 3) Access
 
-- Local test: `curl -I http://127.0.0.1:16350/login`
-- Public: **https://crm.fratelanza.com/login** (after DNS + nginx proxy)
+**https://crm.fratelanza.com/login**
 
-Default login: `admin` / `admin` — change immediately.
-
-### 4) Optional — standalone HTTPS (only if port 80 is free)
-
-```bash
-docker compose --profile https up -d --build
-```
-
-Do **not** use this if another app already uses ports 80/443.
-
-### 5) Updates
+Default login: `admin` / `admin`
 
 ```bash
 cd /opt/fratelanza-crm

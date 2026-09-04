@@ -81,4 +81,6 @@ services:
           done"
 
 volumes:
- 
+  postgres_data:
+  caddy_data:
+  caddy_config:

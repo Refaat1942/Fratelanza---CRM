@@ -1,0 +1,16 @@
+# Join your existing Docker reverse-proxy network (no host ports published).
+# Set PROXY_NETWORK in .env (auto-detected by setup script).
+services:
+  web:
+    networks:
+      default:
+      proxy:
+        aliases:
+          - fratelanza-crm
+    expose:
+      - "16350"
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-fratelanza_default}

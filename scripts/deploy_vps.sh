@@ -1,13 +1,15 @@
 #!/bin/bash
-# Update Fratelanza CRM (Option A — port 16350 behind nginx)
+# Update Fratelanza CRM (integrated — no host ports)
 set -e
 cd "$(dirname "$0")/.."
-COMPOSE="docker compose -f docker-compose.yml -f docker-compose.proxy.yml"
+set -a
+[ -f .env ] && . ./.env
+set +a
+COMPOSE="docker compose -f docker-compose.yml -f docker-compose.integrate.yml"
 
 git pull origin main
 mkdir -p backups app/static/uploads
 $COMPOSE down 2>/dev/null || true
 $COMPOSE up -d --build
 
-echo "Updated. Test: curl -I http://127.0.0.1:16350/login"
-echo "Public : https://crm.fratelanza.com/login"
+echo "Updated. Open https://crm.fratelanza.com/login"

@@ -65,7 +65,7 @@ sed -i "s|^SECRET_KEY=.*|SECRET_KEY=${SECRET_KEY}|" .env
 sed -i "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${DB_PASS}|" .env
 sed -i "s|^DATABASE_URL=.*|DATABASE_URL=postgresql+psycopg://fratelanza:${DB_PASS}@db:5432/fratelanza_crm|" .env
 grep -q '^APP_DOMAIN=' .env && sed -i "s|^APP_DOMAIN=.*|APP_DOMAIN=${DOMAIN}|" .env || echo "APP_DOMAIN=${DOMAIN}" >> .env
-grep -q '^BRAND_NAME=' .env && sed -i "s|^BRAND_NAME=.*|BRAND_NAME=Fratelanza CRM|" .env || echo "BRAND_NAME=Fratelanza CRM" >> .env
+grep -q '^BRAND_NAME=' .env && sed -i 's|^BRAND_NAME=.*|BRAND_NAME="Fratelanza CRM"|' .env || echo 'BRAND_NAME="Fratelanza CRM"' >> .env
 grep -q '^PROXY_NETWORK=' .env && sed -i "s|^PROXY_NETWORK=.*|PROXY_NETWORK=${PROXY_NETWORK}|" .env || echo "PROXY_NETWORK=${PROXY_NETWORK}" >> .env
 
 mkdir -p backups app/static/uploads

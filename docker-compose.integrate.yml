@@ -1,7 +1,8 @@
-# Join your existing Docker reverse-proxy network (no host ports published).
-# Set PROXY_NETWORK in .env (auto-detected by setup script).
+# Join your Docker network + localhost socket for host nginx (not public).
 services:
   web:
+    ports:
+      - "127.0.0.1:16350:16350"
     networks:
       default:
       proxy:

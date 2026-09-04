@@ -1,6 +1,6 @@
 TRANSLATIONS = {
     "ar": {
-        "app_name": "Lotus CRM",
+        "app_name": "Fratelanza CRM",
         "tagline": "مركز الاتصال – إدارة العملاء والشكاوى",
         "login": "تسجيل الدخول",
         "logout": "خروج",
@@ -334,7 +334,7 @@ TRANSLATIONS = {
         "cc": "نسخة",
     },
     "en": {
-        "app_name": "Lotus CRM",
+        "app_name": "Fratelanza CRM",
         "tagline": "Call Center – Customer & Complaints Management",
         "login": "Login",
         "logout": "Logout",

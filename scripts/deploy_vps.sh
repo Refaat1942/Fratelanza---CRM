@@ -1,5 +1,5 @@
 #!/bin/bash
-# Deploy or update Lotus CRM (with Caddy HTTPS on crm.fratelanza.com)
+# Deploy or update Fratelanza CRM (HTTPS on crm.fratelanza.com)
 set -e
 
 cd "$(dirname "$0")/.."
@@ -23,4 +23,4 @@ echo ""
 echo "Deployment complete!"
 echo "URL  : https://crm.fratelanza.com/login"
 echo "Login: admin / admin"
-echo "Logs : docker compose logs -f web caddy"
+echo "Logs : docker compose --profile https logs -f web caddy"

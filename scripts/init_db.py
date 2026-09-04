@@ -50,8 +50,8 @@ DEFAULT_FUNCTIONS = [
         "sort_order": 11,
     },
     {
-        "function_name": "شكاوىي اليوم",
-        "function_name_en": "My Complaints Today",
+        "function_name": "شكاوىي",
+        "function_name_en": "My Complaints",
         "route_name": "complaints.my_complaints",
         "icon": "📌",
         "color_hex": "#00897B",
@@ -116,9 +116,9 @@ DEFAULT_FUNCTIONS = [
 ]
 
 SAMPLE_BRANCHES = [
-    ("B001", "Lotus Maadi", "manager.maadi@lotuspharmacies.com", "area.cairo@lotuspharmacies.com", "sales@lotuspharmacies.com"),
-    ("B002", "Lotus Heliopolis", "manager.heliopolis@lotuspharmacies.com", "area.cairo@lotuspharmacies.com", "sales@lotuspharmacies.com"),
-    ("B003", "Lotus Alexandria", "manager.alex@lotuspharmacies.com", "area.alex@lotuspharmacies.com", "sales@lotuspharmacies.com"),
+    ("B001", "Fratelanza Maadi", "manager.maadi@fratelanza.com", "area.cairo@fratelanza.com", "sales@fratelanza.com"),
+    ("B002", "Fratelanza Heliopolis", "manager.heliopolis@fratelanza.com", "area.cairo@fratelanza.com", "sales@fratelanza.com"),
+    ("B003", "Fratelanza Alexandria", "manager.alex@fratelanza.com", "area.alex@fratelanza.com", "sales@fratelanza.com"),
 ]
 
 SAMPLE_EMPLOYEES = [
@@ -270,7 +270,7 @@ def init_db():
                 )
 
         defaults = {
-            "brand_name": "Lotus CRM",
+            "brand_name": "Fratelanza CRM",
             "primary_color": "#00796b",
             "notification_email": "",
             "smtp_host": "",

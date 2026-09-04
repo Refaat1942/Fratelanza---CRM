@@ -45,7 +45,7 @@ ALLOWED_IMAGE = {"png", "jpg", "jpeg", "gif", "webp"}
 
 def _settings_dict():
     return {
-        "brand_name": AppSetting.get("brand_name", "Lotus CRM"),
+        "brand_name": AppSetting.get("brand_name", "Fratelanza CRM"),
         "primary_color": AppSetting.get("primary_color", "#00796b"),
         "notification_email": AppSetting.get("notification_email", ""),
         "smtp_host": AppSetting.get("smtp_host", ""),
@@ -383,7 +383,7 @@ def template_branches():
     ws = wb.active
     ws.title = "Branches"
     ws.append(["branch_code", "branch_name", "branch_manager_email", "area_manager_email", "sales_manager_email", "owner_email"])
-    ws.append(["B001", "Lotus Maadi", "manager@example.com", "area@example.com", "sales@example.com", "owner@example.com"])
+    ws.append(["B001", "Fratelanza Maadi", "manager@example.com", "area@example.com", "sales@example.com", "owner@example.com"])
     output = io.BytesIO()
     wb.save(output)
     output.seek(0)

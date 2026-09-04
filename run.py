@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Lotus CRM web application entry point."""
+"""Fratelanza CRM web application entry point."""
 import os
 
 from dotenv import load_dotenv

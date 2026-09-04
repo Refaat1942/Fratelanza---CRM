@@ -1,14 +1,14 @@
 #!/bin/bash
-# Fresh VPS install for Lotus CRM at crm.fratelanza.com
+# Fresh VPS install for Fratelanza CRM at crm.fratelanza.com
 # Run as root on Ubuntu 24.04: bash scripts/setup_clean_vps.sh
 set -e
 
 DOMAIN="${APP_DOMAIN:-crm.fratelanza.com}"
-INSTALL_DIR="${INSTALL_DIR:-/opt/lotus-crm}"
+INSTALL_DIR="${INSTALL_DIR:-/opt/fratelanza-crm}"
 REPO="${REPO:-https://github.com/Refaat1942/Lotus-CRM.git}"
 ACME_EMAIL="${ACME_EMAIL:-admin@fratelanza.com}"
 
-echo "=== Lotus CRM clean VPS setup ==="
+echo "=== Fratelanza CRM clean VPS setup ==="
 echo "Domain : $DOMAIN"
 echo "Install: $INSTALL_DIR"
 echo ""
@@ -51,9 +51,10 @@ SECRET_KEY=$(openssl rand -hex 32)
 DB_PASS=$(openssl rand -hex 16)
 sed -i "s|^SECRET_KEY=.*|SECRET_KEY=${SECRET_KEY}|" .env
 sed -i "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${DB_PASS}|" .env
-sed -i "s|^DATABASE_URL=.*|DATABASE_URL=postgresql+psycopg://lotus:${DB_PASS}@db:5432/lotus_crm|" .env
+sed -i "s|^DATABASE_URL=.*|DATABASE_URL=postgresql+psycopg://fratelanza:${DB_PASS}@db:5432/fratelanza_crm|" .env
 grep -q '^APP_DOMAIN=' .env && sed -i "s|^APP_DOMAIN=.*|APP_DOMAIN=${DOMAIN}|" .env || echo "APP_DOMAIN=${DOMAIN}" >> .env
 grep -q '^ACME_EMAIL=' .env && sed -i "s|^ACME_EMAIL=.*|ACME_EMAIL=${ACME_EMAIL}|" .env || echo "ACME_EMAIL=${ACME_EMAIL}" >> .env
+grep -q '^BRAND_NAME=' .env && sed -i "s|^BRAND_NAME=.*|BRAND_NAME=Fratelanza CRM|" .env || echo "BRAND_NAME=Fratelanza CRM" >> .env
 
 mkdir -p backups app/static/uploads
 
@@ -63,7 +64,7 @@ docker compose --profile https up -d --build
 
 echo ""
 echo "============================================"
-echo "  Lotus CRM is starting on this server"
+echo "  Fratelanza CRM is starting on this server"
 echo "============================================"
 echo ""
 echo "1) Cloudflare DNS -> add record:"
@@ -77,6 +78,6 @@ echo "     https://${DOMAIN}/login"
 echo ""
 echo "3) Default login: admin / admin  (change immediately)"
 echo ""
-echo "Logs : cd $INSTALL_DIR && docker compose logs -f web"
-echo "Status: cd $INSTALL_DIR && docker compose ps"
+echo "Logs : cd $INSTALL_DIR && docker compose --profile https logs -f web"
+echo "Status: cd $INSTALL_DIR && docker compose --profile https ps"
 echo ""

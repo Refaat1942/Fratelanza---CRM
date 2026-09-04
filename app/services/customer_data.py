@@ -30,7 +30,7 @@ def hash_phone(phone):
 
 
 def _fernet():
-    secret = os.getenv("ENCRYPTION_KEY") or os.getenv("SECRET_KEY", "lotus-crm-change-me-in-production")
+    secret = os.getenv("ENCRYPTION_KEY") or os.getenv("SECRET_KEY", "fratelanza-crm-change-me-in-production")
     key = urlsafe_b64encode(hashlib.sha256(secret.encode("utf-8")).digest())
     return Fernet(key)
 

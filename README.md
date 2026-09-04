@@ -1,6 +1,6 @@
-# Lotus CRM – Web Application
+# Fratelanza CRM – Web Application
 
-Lotus CRM is a bilingual (Arabic/English) web-based customer and complaints management system for Lotus Pharmacies. It replaces the legacy Tkinter desktop apps with a modern Flask web stack backed by PostgreSQL.
+Fratelanza CRM is a bilingual (Arabic/English) web-based customer and complaints management system. Deploy at **https://crm.fratelanza.com**.
 
 ## Features
 
@@ -56,6 +56,12 @@ python run.py
 
 Open http://localhost:16350 (or the port set in `.env`).
 
+For Docker locally without HTTPS:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+```
+
 ## Docker Deployment (VPS) — crm.fratelanza.com
 
 ### 1) Cloudflare DNS
@@ -79,8 +85,8 @@ curl -fsSL https://raw.githubusercontent.com/Refaat1942/Lotus-CRM/main/scripts/s
 Or clone first:
 
 ```bash
-git clone https://github.com/Refaat1942/Lotus-CRM.git /opt/lotus-crm
-cd /opt/lotus-crm
+git clone https://github.com/Refaat1942/Lotus-CRM.git /opt/fratelanza-crm
+cd /opt/fratelanza-crm
 bash scripts/setup_clean_vps.sh
 ```
 
@@ -112,7 +118,7 @@ Port **16350** is no longer exposed; traffic goes through Caddy on 443.
 ### 5) Updates
 
 ```bash
-cd /opt/lotus-crm
+cd /opt/fratelanza-crm
 bash scripts/deploy_vps.sh
 ```
 

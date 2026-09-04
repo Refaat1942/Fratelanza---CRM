@@ -1,4 +1,4 @@
-# HTTPS reverse proxy for Lotus CRM
+# HTTPS reverse proxy for Fratelanza CRM
 # DNS: crm.fratelanza.com -> VPS IP (Cloudflare: DNS only / grey cloud recommended for Let's Encrypt)
 
 crm.fratelanza.com {

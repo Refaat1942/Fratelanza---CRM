@@ -49,7 +49,7 @@ def create_app(config_class=Config):
         from app.services.complaints import complaint_display_number
 
         lang = session.get("lang", app.config.get("DEFAULT_LANGUAGE", "ar"))
-        brand = AppSetting.get("brand_name", "Lotus CRM")
+        brand = AppSetting.get("brand_name", os.getenv("BRAND_NAME", "Fratelanza CRM"))
         primary = AppSetting.get("primary_color", "#00796b")
         logo_path = AppSetting.get("logo_path", "")
         logo_url = None
